@@ -35,20 +35,23 @@ class ChatHub extends StatelessWidget {
                         itemBuilder: (ctxt, index) {
                           Message msg = userController.messages[index];
                           return Container(
-                            alignment: msg is SendMessage ? Alignment.centerRight : Alignment.centerLeft,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: Container(
+                              alignment: msg is SendMessage ? Alignment.centerRight : Alignment.centerLeft,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: Container(
                                 padding: EdgeInsets.all(8),
                                 margin: EdgeInsets.only(right: msg is SendMessage ? 0 : 30, top: 4, bottom: 4, left: msg is SendMessage ? 30 : 0),
                                 decoration: BoxDecoration(
-                                    color: Color(0xff94D0CC),
+                                    color: msg is SendMessage ? Color(0xff94D0CC) : Color(0xffFBC6A4),
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
-                                      color: Color(0xff94D0CC),
+                                      color: msg is SendMessage ? Color(0xff94D0CC) : Color(0xffFBC6A4),
                                       width: 1,
                                     )),
-                                child: RichText(text: TextSpan(style: TextStyle(fontFamily: 'EmojiOne'), text: userController.messages[index].value))),
-                          );
+                                child: Text(
+                                  userController.messages[index].value,
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                              ));
                         });
                   },
                 ),
