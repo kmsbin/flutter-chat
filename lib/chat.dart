@@ -23,57 +23,61 @@ class ChatHub extends StatelessWidget {
           leading: Icon(Icons.arrow_back_ios),
           title: Text(_user.username),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Observer(
-                builder: (context) {
-                  return ListView.builder(
-                      itemCount: userController.messages.length,
-                      itemBuilder: (ctxt, index) {
-                        Message msg = userController.messages[index];
-                        if (msg is RecieveMessage) {
+        body: Container(
+          padding: EdgeInsets.all(14),
+          child: Column(
+            children: [
+              Expanded(
+                child: Observer(
+                  builder: (context) {
+                    return ListView.builder(
+                        itemCount: userController.messages.length,
+                        itemBuilder: (ctxt, index) {
+                          Message msg = userController.messages[index];
                           return Container(
-                            alignment: Alignment.centerLeft,
-                            width: double.infinity,
-                            child: Text(userController.messages[index].value),
+                            alignment: msg is SendMessage ? Alignment.centerRight : Alignment.centerLeft,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: Container(
+                                padding: EdgeInsets.all(8),
+                                margin: EdgeInsets.only(right: msg is SendMessage ? 0 : 30, top: 4, bottom: 4, left: msg is SendMessage ? 30 : 0),
+                                decoration: BoxDecoration(
+                                    color: Color(0xff94D0CC),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Color(0xff94D0CC),
+                                      width: 1,
+                                    )),
+                                child: RichText(text: TextSpan(style: TextStyle(fontFamily: 'EmojiOne'), text: userController.messages[index].value))),
                           );
-                        } else if (msg is SendMessage) {
-                          return Container(
-                            alignment: Alignment.centerRight,
-                            width: double.infinity,
-                            child: Text(userController.messages[index].value),
-                          );
-                        }
-                        return Text('');
-                      });
-                },
+                        });
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Flexible(
-                      child: TextFormField(
-                    controller: txtController,
-                    textCapitalization: TextCapitalization.words,
-                    onChanged: (evt) {},
-                    style: TextStyle(
-                      color: const Color(0xffd31b77),
-                      decorationColor: const Color(0xffd31b77),
-                    ),
-                    // The validator receives the text that the user has entered.
-                  )),
-                  IconButton(
-                      onPressed: () {
-                        userController.sendMessage(msg: txtController.text, idReciever: _user.id);
-                      },
-                      icon: Icon(Icons.send))
-                ],
-              ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Flexible(
+                        child: TextFormField(
+                      controller: txtController,
+                      textCapitalization: TextCapitalization.words,
+                      onChanged: (evt) {},
+                      style: TextStyle(
+                        color: Colors.white54,
+                        decorationColor: Colors.white54,
+                      ),
+                      // The validator receives the text that the user has entered.
+                    )),
+                    IconButton(
+                        onPressed: () {
+                          userController.sendMessage(msg: txtController.text, idReciever: _user.id);
+                        },
+                        icon: Icon(Icons.send))
+                  ],
+                ),
+              )
+            ],
+          ),
         ));
   }
 }
